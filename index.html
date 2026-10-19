@@ -1,11 +1,388 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>我的网站</title>
-</head>
-<body>
-<h1>✅ GitHub Pages 部署成功</h1>
-<p>tianxin1300.github.io</p>
-</body>
-</html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>就医伴侣 · 病种档案</title>
+<meta name="description" content="一个病种，一份档案。记录病程、保存检查图片、查看指标趋势，资料只存在你自己的设备上。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="就医伴侣 · 病种档案">
+<meta property="og:description" content="一个病种，一份档案。记录病程、保存检查图片、查看指标趋势，资料只存在你自己的设备上。">
+<meta property="og:image" content="https://jiuyiban.netlify.app/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="theme-color" content="#0f766e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="就医伴侣">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E🩺%3C/text%3E%3C/svg%3E">
+<style>
+:root{--bg:#f2f6f6;--card:#fff;--ink:#16282c;--mute:#5d7075;--line:#d5e0e1;--c:#0f766e;--r:12px;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101a1c;--card:#182427;--ink:#e6f0f1;--mute:#93a8ac;--line:#2b3c40}}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif}
+main{max-width:640px;margin:0 auto;padding:16px 16px 140px}
+h1{font-size:22px;margin:8px 0 2px}h2{font-size:17px;margin:0 0 10px}
+.sub{color:var(--mute);font-size:14px;margin:0 0 14px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;max-width:100%}
+.chip{flex:none;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 14px;font:inherit;font-size:14px;cursor:pointer}
+.chip[aria-pressed=true]{border-color:var(--c);background:var(--c);color:#fff}
+.chip.add{border-style:dashed;color:var(--mute)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:14px}
+.card.hd{border-left:5px solid var(--c)}
+label{display:block;font-size:14px;color:var(--mute);margin:12px 0 4px}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 10px}
+textarea{min-height:76px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--c);outline-offset:1px}
+.row{display:flex;gap:8px}.row>*{flex:1;min-width:0}
+.checks{display:flex;flex-wrap:wrap;gap:8px}
+.checks label{display:flex;align-items:center;gap:6px;margin:0;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px 12px;background:var(--bg)}
+.checks input{width:auto}
+.item{border:1px solid var(--line);border-radius:8px;padding:10px;margin-bottom:8px;background:var(--bg)}
+.item .row{margin-bottom:6px}.item input,.item select{background:var(--card)}
+button.btn{font:inherit;border:0;border-radius:8px;padding:9px 16px;background:var(--c);color:#fff;cursor:pointer}
+button.ghost{font:inherit;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:8px;padding:7px 12px;cursor:pointer}
+button.del{color:#E05252;border-color:#E05252}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:var(--r);padding:12px 14px;font:inherit;cursor:pointer;border-left:6px solid var(--c)}
+.opt small{display:block;color:var(--mute)}
+.opt[aria-pressed=true]{background:var(--bg);border-color:var(--c)}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:14px;flex-wrap:wrap}
+.saved{font-size:13px;color:var(--mute)}
+.empty{text-align:center;padding:36px 12px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(24px + env(safe-area-inset-bottom,0px));background:#222;color:#fff;border-radius:999px;padding:10px 18px;z-index:10;display:flex;gap:12px;align-items:center}.toast button{background:none;border:0;color:#7fd3ff;font:inherit;font-weight:700;cursor:pointer;min-height:36px}
+.pvdoc{display:none}body.pvmode{background:#fff}body.pvmode main{display:none}
+body.pvmode .pvdoc{display:block;background:#fff;color:#111;padding:16px;max-width:720px;margin:0 auto}
+.pvdoc .sm{font-size:17px}.pvdoc .sm h3{color:#0f5132}.pvimg{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pvimg img{width:100%;border:1px solid #ccc;break-inside:avoid}
+@media print{.noprint{display:none!important}.pvdoc{padding:0}}
+.tab{padding:0 2px;font-size:16px}
+.sm{font-size:19px;line-height:1.75}.sm h3{font-size:19px;margin:16px 0 4px;color:var(--c)}.sm ul{margin:0;padding-left:22px}.sm li{margin-bottom:4px}
+.acct{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.ov{position:fixed;inset:0;background:#0009;display:flex;align-items:center;justify-content:center;z-index:9;padding:16px}
+.mod{background:var(--card);color:var(--ink);border-radius:var(--r);padding:18px;max-width:420px;width:100%}.mod textarea{min-height:200px}
+.warn{color:#b42318;font-size:15px}.lockb{width:100%;margin:6px 0 10px}
+@media print{.chips,.tabs,.acct,button,.seg{display:none}}
+
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.tab{font:inherit;font-weight:600;min-height:52px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:var(--r);cursor:pointer}
+.tab[aria-pressed=true]{background:var(--c);border-color:var(--c);color:#fff}
+.seg{display:flex;gap:8px;margin-bottom:12px}.seg .chip{flex:1;min-height:48px}
+input,select,textarea{min-height:48px;font-size:17px}
+input[type=checkbox],input[type=radio]{min-height:0;width:20px;height:20px}
+button.btn,button.ghost{min-height:48px}.chip{min-height:44px}
+.tlh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}
+.tag{background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:2px 12px;font-size:14px}
+.tlt{white-space:pre-wrap;margin:6px 0 10px}
+.thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.thumbs img{width:88px;height:88px;object-fit:cover;border-radius:8px;border:1px solid var(--line);cursor:zoom-in;background:var(--bg)}
+.val{font-size:26px;font-weight:700}.val small{font-size:14px;font-weight:400;color:var(--mute)}
+.bad{color:#dc2626}.ch{width:100%;height:auto;color:var(--mute);margin:6px 0 10px}
+.row2{display:flex;justify-content:space-between;align-items:center;gap:8px}
+details{margin-top:12px}summary{cursor:pointer;min-height:44px;line-height:44px}
+.foot{font-size:14px;color:var(--mute)}.emg{border:1.5px solid #dc2626;border-radius:8px;padding:10px 14px;color:var(--ink)}.emg ul{margin:6px 0 0;padding-left:20px}
+
+</style></head><body><main id="app"></main>
+<script>
+const COL={tumor:'#7c3a8c',breast:'#be3a6e',lymphoma:'#6d3a8c',myeloma:'#8a3a6d',leukemia:'#a3304f',auto:'#2f7d6d',ckd:'#3a6ea5',colorectal:'#8b5a2b',lung:'#4a5d7e',hyper:'#2D6B8F',diabetes:'#1d5fb8',rare:'#0f766e'};
+const T=[{k:'type',l:'类型',o:['手术','化疗','免疫','靶向','内分泌治疗','放疗','其他']}];
+const TGT={k:'targets',t:'list',l:'自定义指标目标',add:'添加指标',cols:[{k:'name',l:'指标名称',ph:'如 体重'},{k:'val',l:'目标值',ph:'如 ≤65 kg'}]};
+const BASE=[{k:'diag',t:'date',l:'诊断时间'},{k:'hosp',t:'text',l:'就诊医院'},{k:'dept',t:'text',l:'主治科室'}];
+const D={
+tumor:{n:'肿瘤',d:'乳腺癌、结直肠癌、肺癌、淋巴瘤、白血病等，含病理、分期、治疗方案',f:[...BASE,{k:'path',t:'area',l:'病理结论'},{k:'stage',t:'text',l:'分期',ph:'如 T2N1M0 / III期'},{k:'tx',t:'multi',l:'治疗方案',o:['手术','化疗','免疫','靶向']},TGT]},
+breast:{n:'乳腺癌',d:'确诊、分型、分期、既往治疗',f:[{k:'diag',t:'date',l:'确诊时间'},{k:'hosp',t:'text',l:'就诊医院'},{k:'dept',t:'text',l:'主治科室'},{k:'sub',t:'sel',l:'病理分型',o:['Luminal A型','Luminal B型(HER2阴性)','Luminal B型(HER2阳性)','HER2过表达型','三阴性','暂不明确']},{k:'stage',t:'sel',l:'分期',o:['0期','I期','II期','III期','IV期','暂不明确']},{k:'hist',t:'list',l:'既往治疗记录',add:'添加治疗记录',cols:[{k:'type',l:'治疗类型',sel:['手术','化疗','靶向','内分泌治疗','放疗','其他']},{k:'date',l:'开始日期',date:1},{k:'note',l:'方案/药物/备注',ph:'如 TC方案 4周期'}]},TGT]},
+colorectal:{n:'结直肠癌',d:'',f:[...BASE,{k:'site',t:'sel',l:'肿瘤部位',o:['结肠','乙状结肠','直肠','其他']},{k:'path',t:'area',l:'病理类型'},{k:'stage',t:'text',l:'分期',ph:'如 T3N1M0 / III期'},{k:'mol',t:'area',l:'分子检测结果',ph:'如 MSI/MMR、RAS、BRAF'},{k:'ost',t:'sel',l:'造口情况',o:['无造口','临时造口','永久造口']},{k:'hist',t:'list',l:'治疗记录',add:'添加治疗记录',cols:[{k:'type',l:'治疗类型',sel:['手术','化疗','放疗','靶向','免疫','其他']},{k:'date',l:'开始日期',date:1},{k:'note',l:'方案/药物/备注',ph:'如 具体方案、周期数'}]},TGT]},
+lung:{n:'肺癌',d:'',f:[...BASE,{k:'ptype',t:'sel',l:'病理类型',o:['腺癌','鳞癌','小细胞肺癌','其他']},{k:'stage',t:'text',l:'分期',ph:'如 T2N0M0 / IB期'},{k:'gene',t:'area',l:'基因检测结果',ph:'如 EGFR、ALK、ROS1、KRAS'},{k:'pdl1',t:'text',l:'PD-L1 表达',ph:'如 TPS 50%'},{k:'hist',t:'list',l:'治疗记录',add:'添加治疗记录',cols:[{k:'type',l:'治疗类型',sel:['手术','化疗','放疗','靶向','免疫','其他']},{k:'date',l:'开始日期',date:1},{k:'note',l:'方案/药物/备注',ph:'如 具体方案、周期数'}]},TGT]},
+hyper:{n:'高血压',d:'收缩压、舒张压控制目标',f:[...BASE,{k:'sbp',t:'num',l:'收缩压控制目标 (mmHg)',ph:'如 130'},{k:'dbp',t:'num',l:'舒张压控制目标 (mmHg)',ph:'如 80'},TGT]},
+diabetes:{n:'糖尿病',d:'空腹、餐后2h血糖目标',f:[...BASE,{k:'fbg',t:'text',l:'空腹血糖目标 (mmol/L)',ph:'如 4.4–7.0'},{k:'pbg',t:'text',l:'餐后2h血糖目标 (mmol/L)',ph:'如 <10.0'},TGT]},
+rare:{n:'罕见病',d:'基因检测、会诊、发育评估',f:[...BASE,{k:'gene',t:'area',l:'基因检测结果'},{k:'cHosp',t:'text',l:'确诊医院'},{k:'gc',t:'list',l:'遗传咨询记录',add:'添加咨询记录',cols:[{k:'date',l:'日期',date:1},{k:'note',l:'咨询要点',ph:'咨询机构、结论、建议'}]},{k:'mdt',t:'list',l:'多科室会诊记录',add:'添加会诊记录',cols:[{k:'date',l:'日期',date:1},{k:'dept',l:'参与科室',ph:'如 神经科、康复科'},{k:'note',l:'会诊意见'}]},{k:'dev',t:'area',l:'发育评估基线',kid:1,ph:'如 评估量表、日期、粗大运动/语言/认知水平'},TGT]}
+};
+const TXL=o=>({k:'hist',t:'list',l:'治疗记录',add:'添加治疗记录',cols:[{k:'type',l:'治疗类型',sel:o},{k:'date',l:'开始日期',date:1},{k:'note',l:'方案/药物/剂量',ph:'如 具体方案、周期数'}]});
+D.lymphoma={n:'淋巴瘤',d:'',f:[...BASE,{k:'ptype',t:'sel',l:'病理类型',o:['霍奇金淋巴瘤','弥漫大B细胞淋巴瘤','滤泡性淋巴瘤','其他非霍奇金淋巴瘤','暂不明确']},{k:'stage',t:'text',l:'分期',ph:'如 Ann Arbor III期A'},{k:'ihc',t:'area',l:'免疫组化 / 分子检测结果'},{k:'bm',t:'area',l:'骨髓检查结果'},TXL(['化疗','免疫治疗','靶向','放疗','造血干细胞移植','其他']),TGT]};
+D.myeloma={n:'多发性骨髓瘤',d:'',f:[...BASE,{k:'mtype',t:'sel',l:'分型',o:['IgG型','IgA型','轻链型','非分泌型','其他','暂不明确']},{k:'stage',t:'text',l:'分期',ph:'如 ISS / R-ISS 分期'},{k:'fish',t:'area',l:'细胞遗传学 / FISH 结果'},{k:'bone',t:'area',l:'骨病变情况'},TXL(['化疗','靶向','免疫调节剂','单克隆抗体','放疗','造血干细胞移植','其他']),TGT]};
+D.leukemia={n:'白血病',d:'',f:[...BASE,{k:'ltype',t:'sel',l:'类型',o:['急性髓系白血病','急性淋巴细胞白血病','慢性髓系白血病','慢性淋巴细胞白血病','其他']},{k:'risk',t:'text',l:'危险分层',ph:'按医生所告知填写'},{k:'gene',t:'area',l:'染色体 / 融合基因结果',ph:'如 BCR-ABL 等'},{k:'bm',t:'area',l:'骨髓检查结果'},TXL(['化疗','靶向','免疫治疗','造血干细胞移植','放疗','其他']),TGT]};
+D.auto={n:'自身免疫病',d:'红斑狼疮、类风湿关节炎等，含抗体、受累脏器、用药',f:[...BASE,{k:'which',t:'sel',l:'具体疾病',o:['系统性红斑狼疮','类风湿关节炎','干燥综合征','强直性脊柱炎','血管炎','重症肌无力','其他']},{k:'ab',t:'area',l:'自身抗体结果',ph:'如 ANA、抗dsDNA、RF、抗CCP 等'},{k:'organ',t:'area',l:'受累脏器记录'},{k:'hist',t:'list',l:'治疗用药记录',add:'添加用药记录',cols:[{k:'type',l:'药物类别',sel:['糖皮质激素','免疫抑制剂','生物制剂','羟氯喹','其他']},{k:'date',l:'开始日期',date:1},{k:'note',l:'药名、剂量、调整情况'}]},TGT]};
+D.ckd={n:'慢性肾病',d:'肌酐、eGFR、尿蛋白、透析与用药',f:[...BASE,{k:'cause',t:'text',l:'原发病 / 病因',ph:'按医生所告知填写'},{k:'cstage',t:'sel',l:'CKD 分期',o:['1期','2期','3期','4期','5期','暂不明确']},{k:'rrt',t:'sel',l:'肾脏替代治疗',o:['未透析','血液透析','腹膜透析','肾移植后']},{k:'hist',t:'list',l:'用药与治疗记录',add:'添加记录',cols:[{k:'type',l:'类别',sel:['降压药','降尿蛋白药','免疫抑制 / 激素','促红素 / 铁剂','降磷 / 钙剂','透析相关','其他']},{k:'date',l:'开始日期',date:1},{k:'note',l:'药名、剂量、调整情况'}]},TGT]};
+let S={profiles:[],cur:null,view:'list',draft:{},tab:"info",range:"all",q:"",kf:"",edit:null,mxe:null},mem=null;
+let LOCK=0,BADOK=false,DIRTY=0;
+function load(){try{const r=localStorage.getItem('companion.v1');if(r){let v;try{v=JSON.parse(r)}catch(e){v=null}
+if(Array.isArray(v)&&v.every(x=>x&&typeof x==='object'&&['tl','mx','orders','tpls'].every(k=>x[k]===undefined||Array.isArray(x[k]))&&typeof x.id==='string'&&Object.prototype.hasOwnProperty.call(D,x.disease)&&x.data&&typeof x.data==='object'))S.profiles=v;
+else{LOCK=1;try{localStorage.setItem('companion.v1.bad',r);BADOK=localStorage.getItem('companion.v1.bad')===r}catch(e2){BADOK=false}alert('本机档案数据读取异常，已进入保护模式：新增和修改都不会保存，以免覆盖原数据。'+(BADOK?'原始数据已另存一份。':'原始数据另存失败，请不要清理浏览器数据。')+'请从备份恢复，或在页面顶部选择放弃异常数据。')}}}catch(e){if(mem)S.profiles=mem;else{let w=false;try{localStorage.setItem('companion.t2','1');localStorage.removeItem('companion.t2');w=true}catch(e3){}if(w){LOCK=1;BADOK=false;alert('本机档案读取失败，已进入保护模式，不会写入新数据。请从备份恢复，或刷新重试。')}}}
+S.profiles.forEach(p=>{if(p.disease==='tumor'&&SUBD[p.sub]){p.disease=SUBD[p.sub];delete p.sub}});if(S.profiles.length)S.cur=S.profiles[0].id}
+let SFW=0;function storeFail(){STO=false;if(!SFW){SFW=1;alert('保存失败：浏览器无法写入本机存储（可能是空间不足、无痕模式或被禁用）。请立即导出备份，并换用 Safari / Chrome 的正常模式。')}}
+function failToast(){const t=document.createElement('div');t.className='toast';t.style.background='#b42318';t.textContent='⚠️ 保存失败，请立即导出备份';document.body.appendChild(t);setTimeout(()=>t.remove(),4000)}
+function save(){if(LOCK){DIRTY=0;const s0=document.getElementById('sv');if(s0){s0.textContent='⚠️ 数据异常保护中，未保存';s0.style.color='#E05252'}return false}
+mem=S.profiles;let ok=true;try{localStorage.setItem('companion.v1',JSON.stringify(S.profiles))}catch(e){ok=false;storeFail();failToast()}DIRTY=ok?0:1;
+const s=document.getElementById('sv');if(s){s.textContent=ok?'已保存在本机 '+new Date().toTimeString().slice(0,5):'⚠️ 保存失败，请立即导出备份';s.style.color=ok?'':'#E05252'}return ok}
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const cur=()=>S.profiles.find(p=>p.id===S.cur);
+const label=p=>p.member+' · '+dn(p)+(p.disease==='rare'?(p.age==='child'?'(儿童)':'(成人)'):'');
+function chips(){return `<div class="chips">${S.profiles.map(p=>`<button class="chip" aria-pressed="${S.view==='list'&&p.id===S.cur}" data-act="pick" data-id="${p.id}" style="--c:${COL[p.disease]}">${esc(label(p))}</button>`).join('')}<button class="chip add" data-act="new">＋ 新建档案</button></div>`}
+function field(f,p){const v=p.data[f.k];
+if(f.kid&&p.age!=='child')return'';
+const L=`<label>${f.l}</label>`;
+if(f.t==='text'||f.t==='date'||f.t==='num')return L+`<input data-k="${f.k}" type="${f.t==='num'?'number':f.t==='date'?'date':'text'}" ${f.t==='num'?'inputmode="numeric"':''} value="${esc(v)}" placeholder="${esc(f.ph||'')}">`;
+if(f.t==='area')return L+`<textarea data-k="${f.k}" placeholder="${esc(f.ph||'')}">${esc(v)}</textarea>`;
+if(f.t==='sel')return L+`<select data-k="${f.k}"><option value="">请选择</option>${f.o.map(o=>`<option ${v===o?'selected':''}>${o}</option>`).join('')}</select>`;
+if(f.t==='multi'){const a=v||[];return L+`<div class="checks">${f.o.map(o=>`<label><input type="checkbox" data-m="${f.k}" value="${o}" ${a.includes(o)?'checked':''}>${o}</label>`).join('')}</div>`}
+if(f.t==='list'){const a=v||[];return L+a.map((it,i)=>`<div class="item"><div class="row">${f.cols.map(c=>c.sel?`<select data-l="${f.k}" data-i="${i}" data-c="${c.k}" aria-label="${c.l}"><option value="">${c.l}</option>${c.sel.map(o=>`<option ${it[c.k]===o?'selected':''}>${o}</option>`).join('')}</select>`:`<input data-l="${f.k}" data-i="${i}" data-c="${c.k}" type="${c.date?'date':'text'}" aria-label="${c.l}" placeholder="${esc(c.ph||c.l)}" value="${esc(it[c.k])}">`).join('')}</div><button class="ghost" data-act="rm" data-f="${f.k}" data-i="${i}">删除这条</button></div>`).join('')+`<button class="ghost" data-act="addrow" data-f="${f.k}">＋ ${f.add}</button>`}
+return''}
+function view(){const a=document.getElementById('app');let h=`<h1>就医伴侣</h1><p class="sub">一个病种，一份档案。所有信息只存在这台设备上。</p>`+banners()+acctBar()+chips();
+if(S.view==='bk')h+=bkView();else if(S.view==='home'&&S.profiles.length)h+=homeView();else if(S.view==='price')h+=priceView();else if(S.view==='new'){const d=S.draft;
+h+=`<div class="card"><h2>新建档案</h2><label>成员称呼</label><input id="mn" placeholder="如 妈妈、小宇、我自己" value="${esc(d.member||'')}">
+<label>选择病种</label><div class="opts">${Object.keys(D).filter(k=>!TM[k]).map(k=>`<button class="opt" style="--c:${COL[k]}" aria-pressed="${d.disease===k}" data-act="dis" data-d="${k}">${D[k].n}<small>${D[k].d}</small></button>`).join('')}</div>
+${d.disease==='tumor'?`<label>肿瘤类型</label><div style="display:flex;flex-wrap:wrap;gap:8px">${SUBS.map(s=>`<button class="chip" aria-pressed="${d.sub===s}" data-act="sub" data-s="${s}">${s}</button>`).join('')}</div>`:''}<p class="sub" style="margin-top:10px">即将支持：慢性肝病、心血管慢病</p>${d.disease==='rare'?`<label>患者类型</label><div class="checks"><label><input type="radio" name="ag" value="child" ${d.age==='child'?'checked':''}>儿童</label><label><input type="radio" name="ag" value="adult" ${d.age==='adult'?'checked':''}>成人</label></div>`:''}
+<div class="bar"><button class="ghost" data-act="cancel">取消</button><button class="btn" data-act="create">创建档案</button></div></div>`}
+else{const p=cur();
+if(!p)h+=`<div class="card empty"><h2>还没有档案</h2><p class="sub">选一个病种，建立第一份档案。</p><button class="btn" data-act="new">新建档案</button> <button class="ghost" data-act="demo">查看示例</button> <button class="ghost" data-act="bk">从备份恢复</button></div>`;
+else h+=`<div class="bar" style="margin:0 0 10px"><button class="ghost" data-act="home">‹ 返回档案列表</button></div>`+tabs()+(S.tab==="tl"?tlView(p):S.tab==="mx"?mxView(p):S.tab==="sm"?smView(p):`<div class="card hd" style="--c:${COL[p.disease]}"><h2>${esc(label(p))}</h2><label>成员称呼</label><input data-mem="1" value="${esc(p.member)}">${D[p.disease].f.map(f=>field(f,p)).join('')}<div class="bar"><span class="saved" id="sv">修改会自动保存在本机</span><button class="ghost del" data-act="del">删除档案</button></div></div>`)}
+h+=foot();a.innerHTML=h;afterRender();a.style.setProperty('--c',COL[(cur()||{disease:'rare'}).disease])}
+const KINDS=['就诊记录','化验抽血记录','影像检查记录','治疗记录','用药','症状变化','不良反应'];
+const SUBD={'乳腺癌':'breast','结直肠癌':'colorectal','肺癌':'lung','淋巴瘤':'lymphoma','多发性骨髓瘤':'myeloma','白血病':'leukemia'},TM={breast:1,colorectal:1,lung:1,lymphoma:1,myeloma:1,leukemia:1};
+const SUBS=['乳腺癌','结直肠癌','肺癌','胃癌','肝癌','淋巴瘤','多发性骨髓瘤','白血病','其他肿瘤'];
+const dn=p=>TM[p.disease]?'肿瘤·'+D[p.disease].n:p.disease==='tumor'?'肿瘤'+(p.sub?'·'+p.sub:''):p.disease==='auto'&&p.data&&p.data.which?'自身免疫病·'+p.data.which:D[p.disease].n;
+const today=()=>new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
+let DB;const idb=()=>DB||(DB=new Promise((res,rej)=>{try{const r=indexedDB.open('companion-img',1);r.onupgradeneeded=()=>r.result.createObjectStore('i');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}catch(e){rej(e)}}));
+const iput=async(k,b)=>{const d=await idb();return new Promise((s,j)=>{const t=d.transaction('i','readwrite');t.objectStore('i').put(b,k);t.oncomplete=s;t.onerror=()=>j(t.error)})};
+const iget=async k=>{const d=await idb();return new Promise((s,j)=>{const q=d.transaction('i').objectStore('i').get(k);q.onsuccess=()=>s(q.result);q.onerror=()=>j(q.error)})};
+const idel=k=>idb().then(d=>d.transaction('i','readwrite').objectStore('i').delete(k)).catch(()=>{});
+const idelw=async k=>{const d=await idb();return new Promise((s,j)=>{const t=d.transaction('i','readwrite');t.objectStore('i').delete(k);t.oncomplete=s;t.onerror=()=>j(t.error);t.onabort=()=>j(t.error)})};
+const tabs=()=>`<div class="tabs">${[['info','档案'],['tl','时间线'],['mx','指标趋势'],['sm','复诊摘要']].map(t=>`<button class="tab" aria-pressed="${S.tab===t[0]}" data-act="tab" data-t="${t[0]}">${t[1]}</button>`).join('')}</div>`;
+const foot=()=>`<div class="card foot"><p><b>🚨 身体出现紧急情况，请立即就医或拨打急救电话（国内 120）。</b></p><p><b>⚠️ 本工具仅用于病程资料归档记录，不是医疗设备。</b>所有数值与资料均为用户自行录入，仅作就诊参考，不能用于诊断。</p><p>本工具仅病程资料归档记录工具，不属于医疗器械，不能替代医生面诊；所有资料仅供复诊、多学科会诊给医师参考，不可自行调整治疗方案。</p><p><button class="ghost" data-act="priv">查看隐私说明</button></p></div>`;
+function afterRender(){document.querySelectorAll('img[data-img]').forEach(async i=>{try{const b=await iget(i.dataset.img);if(b)i.src=URL.createObjectURL(b)}catch(e){}})}
+const okId=s=>typeof s==='string'&&/^[\w\u4e00-\u9fa5-]{1,60}$/.test(s),okD=s=>typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s),okN=v=>v===''||(typeof v==='number'&&isFinite(v));
+function validBk(q){if(!q||!okId(q.id)||!Object.prototype.hasOwnProperty.call(D,q.disease)||typeof q.member!=='string'||typeof q.data!=='object'||!q.data||!['tl','mx','orders','tpls'].every(k=>Array.isArray(q[k]||[])&&(q[k]||[]).length<=20000))return false;
+for(const r of q.tl||[])if(!r||!okId(r.id)||!okD(r.date)||typeof r.kind!=='string'||(r.text!==undefined&&typeof r.text!=='string')||!Array.isArray(r.imgs||[])||!(r.imgs||[]).every(okId))return false;
+for(const m of q.mx||[]){if(!m||typeof m.name!=='string'||!okId(m.id)||!okN(m.lo)||!okN(m.hi)||!Array.isArray(m.pts))return false;for(const x of m.pts)if(!x||!okId(x.id)||!okD(x.date)||typeof x.v!=='number'||!isFinite(x.v)||(x.rl!==undefined&&!okN(x.rl))||(x.rh!==undefined&&!okN(x.rh))||(x.org!==undefined&&typeof x.org!=='string'))return false}
+for(const o of q.orders||[])if(!okId(o.id)||!okD(o.date)||(o.due&&!okD(o.due))||(o.doneAt&&!okD(o.doneAt)))return false;
+for(const t of q.tpls||[])if(!okId(t.id)||!Array.isArray(t.fields))return false;
+return true}
+const rd=b=>new Promise((s,j)=>{const f=new FileReader();f.onload=()=>s(f.result);f.onerror=j;f.readAsDataURL(b)});
+const b2s=u=>{let s='';for(let i=0;i<u.length;i+=32768)s+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(s)};
+const s2b=s=>{const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u};
+async function dkey(pw,salt){const k=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:250000,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
+async function encStr(txt,pw){const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12)),c=await crypto.subtle.encrypt({name:'AES-GCM',iv},await dkey(pw,salt),new TextEncoder().encode(txt));return JSON.stringify({app:'companion',enc:1,kdf:'PBKDF2-SHA256-250000',salt:b2s(salt),iv:b2s(iv),data:b2s(new Uint8Array(c))})}
+async function decStr(o,pw){const p=await crypto.subtle.decrypt({name:'AES-GCM',iv:s2b(o.iv)},await dkey(pw,s2b(o.salt)),s2b(o.data));return new TextDecoder().decode(p)}
+async function exportBackup(){try{await exportBackup_()}catch(e){const m=document.getElementById('bkm');if(m)m.textContent='导出失败，请重试；若反复失败，请换用 Safari / Chrome 的正常模式打开。'}}
+async function exportBackup_(){const m=document.getElementById('bkm'),ims={},keys=new Set();let miss=0;
+if(!(window.crypto&&crypto.subtle)){m.textContent='当前浏览器环境不支持备份所需的校验/加密功能（需要 https 打开或较新的浏览器），无法导出。';return}
+const pw=(document.getElementById('bkpw')||{value:''}).value;if(pw){if(pw.length<8){m.textContent='密码至少 8 位，建议用只给备份用的独立密码。';return}if(prompt('请再输入一次备份密码确认。忘记密码将无法打开这个备份。')!==pw){m.textContent='两次密码不一致，未导出。';return}}
+S.profiles.forEach(p=>(p.tl||[]).forEach(r=>(r.imgs||[]).forEach(k=>keys.add(k))));
+for(const k of keys){try{const b=await iget(k);if(!b){miss++;continue}ims[k]={t:b.type,d:await rd(b)}}catch(e){miss++}}
+const payload={profiles:S.profiles,images:ims},file=JSON.stringify({app:'companion',v:1,at:new Date().toISOString(),sum:await sha(JSON.stringify(payload)),payload}),name='就医伴侣_备份_'+today().replaceAll('-','')+(pw?'_加密':'')+'.json',out=pw?await encStr(file,pw):file,blob=new Blob([out],{type:'application/json'});
+try{const dl=typeof claude!=='undefined'?await claude.use('downloads'):null;
+if(dl)await dl.save({filename:name,data:blob});
+else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click()}
+if(!miss){A.bk=today();saveA()}m.textContent=(pw?'【已加密】':'')+'备份已导出：'+S.profiles.length+' 份档案，'+Object.keys(ims).length+' 张图片'+(miss?'。⚠ 备份不完整：有 '+miss+' 张图片读取失败、未包含，本次不计入“已备份”，请重试':'。请把文件保存在手机以外的地方。')}
+catch(e){m.textContent=e&&e.code==='declined'?'已取消导出。':'导出失败，请重试。'}}
+async function importBackup(f){const m=document.getElementById('bkm');if(!f){m.textContent='请先选择备份文件。';return}if(f.size>200*1048576){m.textContent='备份文件超过 200 MB，已拒绝恢复。';return}if(!(window.crypto&&crypto.subtle)){m.textContent='当前浏览器环境不支持备份所需的校验/加密功能，无法恢复。';return}
+try{let o=JSON.parse(await f.text());if(o&&o.enc){const pw=(document.getElementById('bkpw')||{value:''}).value;if(!pw)throw 7;try{o=JSON.parse(await decStr(o,pw))}catch(e){throw 6}}if(!o||o.app!=='companion'||!o.payload||!Array.isArray(o.payload.profiles))throw 1;
+if(await sha(JSON.stringify(o.payload))!==o.sum)throw 2;
+const pr=o.payload.profiles;if(pr.length>300||!pr.every(validBk))throw 3;const have=o.payload.images||{},miss=new Set();pr.forEach(q=>(q.tl||[]).forEach(r=>(r.imgs||[]).forEach(k=>{if(!have[k])miss.add(k)})));
+const rows=pr.map(q=>{const ex=S.profiles.some(x=>x.id===q.id),mc=(q.mx||[]).reduce((n,m)=>n+m.pts.length,0),ic=(q.tl||[]).reduce((n,r)=>n+(r.imgs||[]).length,0);return '<li><b>'+esc(q.member+' · '+dn(q))+'</b>：'+(q.tl||[]).length+' 条记录，'+mc+' 个指标数值，'+ic+' 张图片；'+(ex?'<span class="bad">覆盖本机同一份档案</span>':'新增')+'</li>'}).join('');
+if(!await askModal('<h2>恢复预览</h2><p class="sub">备份时间：'+esc((o.at||'').slice(0,10))+'</p><ul>'+rows+'</ul><p class="sub">本机上不在备份里的档案不受影响。</p>'+(miss.size?'<p class="bad">有 '+miss.size+' 张图片在备份文件里缺失，恢复后这些图片无法显示。</p>':'')))return;
+if(Object.keys(have).length>1000)throw 8;const dec=[];for(const k in have){if(!okId(k))continue;const x=have[k];if(!x||typeof x.d!=='string'||!/^data:[\w.+\/-]*;base64,/.test(x.d))throw 4;if(x.d.length>27e6)throw 8;let bin;try{bin=atob(x.d.split(',')[1])}catch(e){throw 4}const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);dec.push([k,new Blob([u],{type:/^image\//.test(x.t)?x.t:'image/jpeg'})])}
+const prev=S.profiles.slice(),done=[],olds=[],wasLock=LOCK;LOCK=0;
+try{for(const [k,b] of dec){const had=await iget(k).catch(()=>null);if(had)olds.push([k,had]);else done.push(k);await iput(k,b)}
+const nx=S.profiles.slice();pr.forEach(q=>{const i=nx.findIndex(x=>x.id===q.id);i>=0?nx[i]=q:nx.push(q)});S.profiles=nx;if(!save())throw 5}
+catch(er){LOCK=wasLock;S.profiles=prev;mem=prev;let rbok=true;for(const k of done){try{await idelw(k)}catch(e2){rbok=false}}for(const [k,ob] of olds){try{await iput(k,ob)}catch(e2){rbok=false}}if(!rbok)throw 9;throw typeof er==='number'?er:5}
+let bad=0;for(const [k] of dec){try{if(!await iget(k))bad++}catch(e){bad++}}
+if(!S.cur||!cur())S.cur=S.profiles[0]?S.profiles[0].id:null;S.view='list';view();alert('已恢复 '+pr.length+' 份档案，'+dec.length+' 张图片'+(bad?'；其中 '+bad+' 张核对失败，请重新导出备份检查':'，核对无误')+'。')}
+catch(e){m.textContent=e===2?'备份文件校验失败，文件可能已损坏或被修改。':e===3?'备份文件内容不符合格式，已拒绝恢复。':e===9?'恢复失败，而且撤销没有完全成功，本机原有数据的完整性未确认。请保留备份文件，先不要清除或再次恢复，并立即导出当前数据。':e===8?'备份里图片过多或单张过大（上限 1000 张、每张约 20 MB），已拒绝恢复。':e===6?'密码不对，或备份文件已损坏。注意：忘记密码无法找回。':e===7?'这个备份已加密，请先在上方「备份密码」里填写密码。':e===4?'备份里的图片数据损坏，已拒绝恢复，本机数据未改动。':e===5?'恢复过程中写入失败（可能空间不足），已撤销，本机原有数据未改动。':'这不是有效的备份文件。'}}
+const bkView=()=>`<div class="card hd"><h2>数据备份与恢复</h2><p class="sub">备份包含全部档案、时间线、指标和图片，不含积分与兑换码。换设备、清理浏览器之前，请先导出。</p><p>${A.bk?'上次备份：'+A.bk:'<b>还没有备份过。</b>'}</p>${S.quota&&S.quota.quota?`<p class="sub">本机已用空间约 ${(S.quota.usage/1048576).toFixed(1)} MB（浏览器给的上限约 ${(S.quota.quota/1048576).toFixed(0)} MB，仅供参考）</p>`:''}<label>备份密码（可不填）</label><input type="password" id="bkpw" autocomplete="new-password" placeholder="至少 8 位；导出时填写则加密，恢复加密备份时也填这里"><p class="sub">填了密码，备份文件里的档案和图片会加密。<b>忘记密码无法找回</b>，请自己牢记；不填则导出未加密文件。</p><div class="bar"><button class="btn" data-act="bkexp">导出完整备份</button></div><label>从备份文件恢复</label><input type="file" id="bkf" accept=".json,application/json"><div class="bar"><button class="ghost" data-act="bkimp">恢复备份</button></div><p class="sub" id="bkm"></p></div><div class="card"><h2>清除本机数据</h2><p class="sub">删除这台设备浏览器里的全部档案、记录、指标和图片，不影响你已导出的备份文件。清除前请先导出备份。</p><div class="bar"><button class="ghost del" data-act="wipe">清除全部数据</button></div></div><div class="bar"><button class="ghost" data-act="back">返回档案</button></div>`;
+const kindList=p=>[...new Set([...KINDS,...(p.tl||[]).map(r=>r.kind)])];
+const tlFilter=(p,n)=>n?`<div class="row"><input id="tq" type="search" placeholder="搜索内容、医院、日期" value="${esc(S.q||'')}" aria-label="搜索"><select id="tkf" aria-label="按类型筛选"><option value="">全部类型</option>${kindList(p).map(k=>`<option ${S.kf===k?'selected':''}>${esc(k)}</option>`).join('')}</select></div>`:'';
+const editForm=(r,p)=>`<div class="card hd"><h2>编辑记录</h2><label>记录类型</label><select id="ek">${kindList(p).map(k=>`<option ${k===r.kind?'selected':''}>${esc(k)}</option>`).join('')}</select><label>日期</label><input id="ed" type="date" value="${esc(r.date)}"><label>医院 / 科室</label><input id="eh" value="${esc(r.hosp||'')}"><label>内容摘要</label><textarea id="et">${esc(r.text||'')}</textarea>${(r.fields||[]).map((x,i)=>`<label>${esc(x.n)}</label><input data-ef="${i}" value="${esc(x.v)}">`).join('')}${(r.imgs||[]).length?'<p class="sub">图片保持不变；如需更换图片，请删除这条记录后重新添加。</p>':''}<div class="bar"><button class="ghost" data-act="tlcancel">取消</button><button class="btn" data-act="tlupd" data-id="${r.id}">保存修改</button></div></div>`;
+function recCard(r,p){if(S.edit===r.id)return editForm(r,p);return `<div class="card"><div class="tlh"><b>${r.star?'★ ':''}${esc(r.date)}</b><span class="tag">${esc(r.kind)}${r.tpl?' · '+esc(r.tpl):''}</span></div>${r.hosp?`<div class="sub">${esc(r.hosp)}</div>`:''}<div class="tlt">${esc(r.text)}</div>${(r.fields||[]).map(x=>`<div class="tlt"><b>${esc(x.n)}</b>：${esc(x.v)}</div>`).join('')}${(r.imgs||[]).length?`<div class="thumbs">${r.imgs.map(k=>`<img data-img="${k}" data-act="zoom" alt="已上传图片">`).join('')}</div>`:''}<button class="ghost" data-act="tlstar" data-id="${r.id}">${r.star?'★ 取消重点':'☆ 设为重点'}</button> <button class="ghost" data-act="tledit" data-id="${r.id}">编辑</button> <button class="ghost del" data-act="tldel" data-id="${r.id}">删除</button></div>`}
+function smData(p,rgo){syncT(p);const d=p.data,rg=rgo||S.sr||'3m',days={'3m':92,'6m':183,all:36500}[rg],lim=Date.now()-days*864e5,inr=x=>new Date(x).getTime()>=lim,sec=[],M=D[p.disease],B=[];
+M.f.forEach(f=>{if(f.t==='list'||(f.kid&&p.age!=='child'))return;const v=d[f.k],s=f.t==='multi'?(v||[]).join('、'):v;if(s!==undefined&&s!==null&&s!=='')B.push(f.l+'：'+s)});
+const tg=(d.targets||[]).filter(x=>x.name||x.val).map(x=>(x.name||'')+'：'+(x.val||''));if(tg.length)B.push('自定义指标目标：'+tg.join('；'));
+if(B.length)sec.push({h:'基本信息',lines:B});
+M.f.forEach(f=>{if(f.t!=='list'||f.k==='targets')return;const L=(d[f.k]||[]).slice().sort((a,b)=>(a.date||'').localeCompare(b.date||'')).map(it=>f.cols.map(c=>it[c.k]).filter(Boolean).join(' · ')).filter(Boolean);if(L.length)sec.push({h:f.l,lines:L})});
+const od=p.orders||[],fo=o=>o.cat+' · '+o.text+(o.due?'（需在 '+o.due+' 前完成）':'')+'（记录于 '+o.date+'）',op=od.filter(o=>!o.done).sort((a,b)=>(a.due||'9999').localeCompare(b.due||'9999')),dd=od.filter(o=>o.done&&inr(o.doneAt||o.date));
+const ordSec=[];if(op.length)ordSec.push({h:'医生交代的待办事项',lines:op.map(fo)});if(dd.length)ordSec.push({h:'近期已完成的医嘱',lines:dd.map(fo)});
+const tl=(p.tl||[]).filter(r=>inr(r.date)).sort((a,b)=>b.date.localeCompare(a.date));
+const line=r=>[r.date,r.kind+(r.tpl?'·'+r.tpl:''),r.hosp,r.text,...(r.fields||[]).map(x=>x.n+'：'+x.v)].filter(Boolean).join(' · ')+((r.imgs||[]).length?'（附图'+r.imgs.length+'张）':'');
+const grp=(a,h)=>{if(a.length)sec.push({h,lines:a.slice(0,10).map(line).concat(a.length>10?['另有 '+(a.length-10)+' 条较早记录未列出，见时间线']:[])})},tx=r=>['用药','治疗记录','症状变化','不良反应'].includes(r.kind);
+const stl=(p.tl||[]).filter(r=>r.star).sort((a,b)=>b.date.localeCompare(a.date));if(stl.length)sec.push({h:'重点记录（不受时间范围限制）',lines:stl.slice(0,10).map(line)});
+const kd=ks=>tl.filter(r=>ks.includes(r.kind)),KN=['治疗记录','用药','化验抽血记录','影像检查记录','就诊记录','症状变化','不良反应'];
+grp(kd(['治疗记录']),'近期治疗记录');grp(kd(['用药']),'近期用药');grp(kd(['化验抽血记录','影像检查记录']),'近期检查');grp(kd(['就诊记录']),'近期就诊');grp(tl.filter(r=>!KN.includes(r.kind)),'其他记录');
+const ml=[];(p.mx||[]).forEach(m=>{const pts=m.pts.filter(x=>inr(x.date)).sort((a,b)=>a.date.localeCompare(b.date));if(!pts.length)return;const last=pts[pts.length-1],seq=pts.length<=6?pts.map(x=>x.date.slice(5)+' '+x.v+(x.note?'（'+x.note+'）':'')).join('；'):pts[0].date.slice(5)+' '+pts[0].v+' → '+last.date.slice(5)+' '+last.v+'（共 '+pts.length+' 次）';ml.push(m.name+(m.unit?'（'+m.unit+'）':'')+'：'+seq+(hasL(last)?'（最新值的化验单参考范围 '+(last.rl===''?'—':last.rl)+' ~ '+(last.rh===''?'—':last.rh)+(last.org?'，'+last.org:'')+'）':'')+(inRP(m,last)?'':'  ⚠ 最新值超出'+(hasL(last)?'本次化验单参考范围':m.my?(SRC[m.rsrc||'me']||SRC.me):m.src==='t'?'档案里的目标':'通用参考值')))});
+if(ml.length)sec.push({h:'指标变化',lines:ml});grp(kd(['症状变化','不良反应']),'近期症状与不良反应');ordSec.forEach(x=>sec.push(x));
+const q=(d.ask||'').trim();if(q)sec.push({h:'这次想问医生的问题',lines:q.split('\n').map(s=>s.trim()).filter(Boolean)});
+const title=p.member+' · '+dn(p)+(p.disease==='rare'?(p.age==='child'?'（儿童）':'（成人）'):'')+' 复诊摘要',meta='生成于 '+today()+' · 记录范围：'+({'3m':'近3个月','6m':'近半年',all:'全部'}[rg]),note='请先核对内容是否完整、准确，再带给医生。本摘要由用户自行录入的资料整理而成，仅供复诊参考，不含诊断或解读。标 ⚠ 的指标，表示最新值超出页面中所设或通用的参考范围，仅作提示。';
+return{title,meta,note,sec,tl,md:'# '+title+'\n> '+meta+'\n\n'+sec.map(x=>'## '+x.h+'\n'+x.lines.map(l=>'- '+l).join('\n')).join('\n\n')+'\n\n> '+note}}
+function smView(p){if(!A.unlocked&&!p.demo)return`<div class="card hd"><h2>复诊摘要</h2><p>把档案、治疗经过、近期记录和指标变化整理成一页，复诊时直接给医生看，也能一键复制。</p><p class="sub">复诊摘要是永久版功能。</p><div class="bar"><button class="btn" data-act="price">了解永久版</button></div></div>`;
+const s=smData(p);
+return`<div class="seg">${[['3m','近3个月'],['6m','近半年'],['all','全部']].map(r=>`<button class="chip" aria-pressed="${(S.sr||'3m')===r[0]}" data-act="sr" data-r="${r[0]}">${r[1]}</button>`).join('')}</div><div class="card"><label style="margin-top:0">这次想问医生的问题（每行一个）</label><textarea data-k="ask" placeholder="如：&#10;下次复查什么时候做？&#10;这个药有哪些副作用需要注意？">${esc(p.data.ask||'')}</textarea></div><div class="card sm"><h2>${esc(s.title)}</h2><p class="sub">${esc(s.meta)}</p>${s.sec.length?s.sec.map(x=>`<h3>${esc(x.h)}</h3><ul>${x.lines.map(l=>`<li>${esc(l)}</li>`).join('')}</ul>`).join(''):'<p class="sub">还没有可汇总的资料。先在「档案」「时间线」「指标趋势」里录入。</p>'}<p class="sub" style="font-size:14px;line-height:1.5">${esc(s.note)}</p></div>${A.unlocked?'<div class="bar"><button class="btn" data-act="smcopy">复制文字摘要</button> <button class="ghost" data-act="smpdf">导出 PDF（含图片）</button></div><p class="sub">如果要把摘要粘贴到第三方 AI 应用，请先去掉姓名、身份证号等个人信息。</p>':'<p class="sub">这是示例数据的体验预览。复制、导出 PDF 是永久版功能。</p>'}`}
+const ptRow=(m,x)=>S.mxe===m.id+'|'+x.id?`<div class="item"><div class="row"><input id="pe_d" type="date" value="${esc(x.date)}" aria-label="日期"><input id="pe_v" type="number" step="any" inputmode="decimal" value="${x.v}" aria-label="数值"></div><input id="pe_n" placeholder="备注（可不填）" value="${esc(x.note||'')}" style="margin-top:8px"><div class="row" style="margin-top:8px"><input id="pe_rl" type="number" step="any" inputmode="decimal" placeholder="化验单下限" value="${hasL(x)?x.rl:''}" aria-label="化验单参考下限"><input id="pe_rh" type="number" step="any" inputmode="decimal" placeholder="化验单上限" value="${hasL(x)?x.rh:''}" aria-label="化验单参考上限"></div><input id="pe_o" placeholder="检测机构（可不填）" value="${esc(x.org||'')}" style="margin-top:8px"><div class="bar"><button class="ghost" data-act="mxecancel" data-id="${m.id}">取消</button><button class="btn" data-act="mxesave" data-id="${m.id}" data-pd="${x.id}">保存</button></div></div>`:`<div class="item row2"><span>${esc(x.date)} · <b class="${inRP(m,x)?'':'bad'}">${x.v}</b>${hasL(x)?' · 化验单参考 '+(x.rl===''?'—':x.rl)+'~'+(x.rh===''?'—':x.rh):''}${x.org?' · '+esc(x.org):''}${x.note?' · '+esc(x.note):''}</span><span><button class="ghost" data-act="mxedit" data-id="${m.id}" data-pd="${x.id}">编辑</button> <button class="ghost" data-act="mxdel" data-id="${m.id}" data-pd="${x.id}">删除</button></span></div>`;
+const askModal=h=>new Promise(res=>{const o=document.createElement('div');o.className='ov';o.innerHTML='<div class="mod">'+h+'<div class="bar"><button class="ghost" id="ao_n">取消</button><button class="btn" id="ao_y">确认恢复</button></div></div>';document.body.appendChild(o);o.querySelector('#ao_n').onclick=()=>{o.remove();res(false)};o.querySelector('#ao_y').onclick=()=>{o.remove();res(true)}});
+function mkDemo(){const D0=n=>new Date(Date.now()-n*864e5-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10),pt=(n,v)=>({id:'x'+n,date:D0(n),v});
+return{id:'demo'+Date.now(),member:'示例（可删除）',disease:'breast',demo:1,data:{diag:D0(300),hosp:'示例医院',dept:'乳腺外科',sub:'Luminal A型',stage:'II期',hist:[{type:'手术',date:D0(280),note:'保乳手术（示例）'},{type:'内分泌治疗',date:D0(240),note:'示例药物，每日一次'}],targets:[{name:'体重',val:'≤65 kg'}],ask:'这个药需要吃多久？\n下次复查需要做哪些检查？'},
+tl:[{id:'r1',kind:'就诊记录',date:D0(60),hosp:'示例医院 乳腺外科',text:'术后复诊（示例内容，可删除）',imgs:[]},{id:'r2',kind:'化验抽血记录',date:D0(45),hosp:'示例医院',text:'肿瘤标志物、血常规（示例）',imgs:[]},{id:'r3',kind:'影像检查记录',date:D0(30),hosp:'示例医院',text:'乳腺超声结论摘要（示例）',imgs:[]},{id:'r4',kind:'用药',date:D0(20),hosp:'',text:'已服药：示例药物',imgs:[]},{id:'r5',kind:'不良反应',date:D0(10),hosp:'',text:'轻微关节不适（示例）',imgs:[]}],
+orders:[{id:'o1',date:D0(10),cat:'复查随访',text:'两周后复查血常规（示例）',due:D0(-14),done:false},{id:'o2',date:D0(10),cat:'用药',text:'按医生交代每天固定时间服药（示例）',due:'',done:true,doneAt:D0(9)}],
+mx:[{id:'mCA153',name:'CA153',unit:'U/mL',lo:'',hi:25,pts:[pt(90,18),pt(60,21),pt(30,23),pt(5,27)]},{id:'mCEA',name:'CEA',unit:'ng/mL',lo:'',hi:5,pts:[pt(90,2.1),pt(60,2.4),pt(30,2.2),pt(5,2.6)]}]}}
+async function openPdf(p,rg){document.querySelectorAll('.pvdoc').forEach(x=>x.remove());const US=[];const s=smData(p,rg),w=document.createElement('div');w.className='pvdoc';let ih='',n=0;
+for(const r of s.tl.filter(r=>(r.imgs||[]).length).slice(0,8)){let row='';for(const k of r.imgs){if(n>=12)break;try{const b=await iget(k);if(b){const u=URL.createObjectURL(b);US.push(u);row+='<img src="'+u+'" alt="">';n++}}catch(e){}}if(row)ih+='<h3>'+esc(r.date+' · '+r.kind)+'</h3><div class="pvimg">'+row+'</div>'}
+w.innerHTML='<div class="noprint bar"><button class="ghost" id="pv_x">返回</button><button class="btn" id="pv_p">打印 / 保存为 PDF</button></div><div class="sm"><h2>'+esc(s.title)+'</h2><p>'+esc(s.meta)+'</p>'+s.sec.map(x=>'<h3>'+esc(x.h)+'</h3><ul>'+x.lines.map(l=>'<li>'+esc(l)+'</li>').join('')+'</ul>').join('')+(ih?'<h3>附：检查图片</h3>'+ih:'')+'<p style="font-size:13px">'+esc(s.note)+'</p></div>';
+document.body.appendChild(w);document.body.classList.add('pvmode');scrollTo(0,0);
+w.querySelector('#pv_x').onclick=()=>{w.remove();document.body.classList.remove('pvmode');US.forEach(u=>URL.revokeObjectURL(u))};
+w.querySelector('#pv_p').onclick=()=>{try{print()}catch(e){alert('当前浏览器不支持打印，请截图保存')}}}
+const OCAT=['用药','复查随访','饮食活动','伤口护理','需要警惕的情况','其他'];
+function ordView(p){const od=p.orders||[],t0=today(),op=od.filter(o=>!o.done).sort((a,b)=>(a.due||'9999').localeCompare(b.due||'9999')),dn=od.filter(o=>o.done).sort((a,b)=>(b.doneAt||'').localeCompare(a.doneAt||''));
+const row=o=>`<div class="item"><div class="tlh"><b>${esc(o.cat)}</b>${o.due?`<span class="tag ${!o.done&&o.due<t0?'bad':''}">需在 ${esc(o.due)} 前完成</span>`:''}</div><div class="tlt">${esc(o.text)}</div><div class="sub">记录于 ${esc(o.date)}${o.done?' · 已完成 '+esc(o.doneAt||''):''}</div><div class="row"><button class="ghost" data-act="${o.done?'orundo':'ordone'}" data-id="${o.id}">${o.done?'改回待办':'标记已完成'}</button><button class="ghost del" data-act="ordel" data-id="${o.id}">删除</button></div></div>`;
+return `<div class="card hd"><h2>医生嘱咐${op.length?'（待办 '+op.length+'）':''}</h2><p class="sub">按医生原话记录，只作备忘，不会推送提醒。</p>${op.map(row).join('')||'<p class="sub">暂无待办的医嘱。</p>'}<details><summary>添加医嘱</summary><label>类别</label><select id="oc">${OCAT.map(c=>`<option>${c}</option>`).join('')}</select><label>医生说的内容</label><textarea id="ot" placeholder="如：两周后复查血常规"></textarea><label>需要完成的日期（可不填）</label><input id="od" type="date"><div class="bar"><button class="btn" data-act="oradd">保存医嘱</button></div></details>${dn.length?`<details><summary>已完成（${dn.length}）</summary>${dn.map(row).join('')}</details>`:''}</div>`}
+const UNDO_MS=8000;let UNDO=null;
+function askDelete(p){const o=document.createElement('div');o.className='ov';o.innerHTML='<div class="mod"><h2>删除档案？</h2><p>删除后将无法恢复该档案及其所有就诊、指标和上传图片记录。</p><div class="bar"><button class="ghost" id="dl_n" style="border-color:#ccc">取消</button><button class="ghost" id="dl_b">先去备份</button><button class="btn" id="dl_y" style="background:#E05252">删除</button></div></div>';document.body.appendChild(o);
+o.querySelector('#dl_n').onclick=()=>o.remove();o.querySelector('#dl_b').onclick=()=>{o.remove();S.view='bk';view();scrollTo(0,0)};o.querySelector('#dl_y').onclick=()=>{o.remove();doDelete(p)}}
+function finalizeDelete(){if(!UNDO)return;const e=UNDO;UNDO=null;clearTimeout(e.timer);e.t.remove();(e.p.tl||[]).forEach(r=>(r.imgs||[]).forEach(idel))}
+function doDelete(p){const idx=S.profiles.findIndex(x=>x.id===p.id);if(idx<0)return;finalizeDelete();S.profiles.splice(idx,1);S.cur=S.profiles[0]?S.profiles[0].id:null;S.view='list';save();view();
+const t=document.createElement('div');t.className='toast';t.innerHTML='已删除 <button id="tu">撤销</button>';document.body.appendChild(t);
+const e={p,idx,t,timer:setTimeout(finalizeDelete,UNDO_MS)};UNDO=e;
+t.querySelector('#tu').onclick=()=>{clearTimeout(e.timer);S.profiles.splice(Math.min(idx,S.profiles.length),0,p);S.cur=p.id;UNDO=null;t.remove();save();view()}}
+const homeView=()=>`<h2>全部档案（${S.profiles.length}）</h2><div class="opts">${S.profiles.map(p=>{const n=(p.tl||[]).length,od=(p.orders||[]).filter(o=>!o.done).length,last=(p.tl||[]).map(r=>r.date).sort().pop();return `<button class="opt" style="--c:${COL[p.disease]}" data-act="pick" data-id="${p.id}"><b>${esc(label(p))}</b><small>${n} 条记录${od?' · 待办医嘱 '+od:''}${last?' · 最近记录 '+esc(last):''}</small></button>`}).join('')}</div><div class="bar"><button class="btn" data-act="new">＋ 新建档案</button></div>`;
+function bkToast(){if(A.bk&&Date.now()-new Date(A.bk).getTime()<7*864e5)return;const t=document.createElement('div');t.className='toast';t.innerHTML='已保存到本机（未加密，也不等于已备份） <button>去备份</button>';document.body.appendChild(t);const x=setTimeout(()=>t.remove(),5000);t.querySelector('button').onclick=()=>{clearTimeout(x);t.remove();S.view='bk';view();scrollTo(0,0)}}
+function inAppModal(){const o=document.createElement('div');o.className='ov';o.innerHTML='<div class="mod"><h2>⚠️ 病历数据安全提醒</h2><p>你正在微信 / QQ 内置浏览器里。这里的数据可能被应用自动清理，录入的病历和化验单图片有丢失的风险。</p><p><b>建议：</b>点右上角「···」，选「在浏览器打开」或「复制链接」，用手机自带的浏览器（Safari、Chrome 等）使用。</p><input readonly id="ia_u" value="'+esc(location.href.split('#')[0])+'" aria-label="本页链接"><p class="sub">微信内只适合临时预览，不建议录入重要病历。每次使用后，请到「数据备份」导出文件保存；不要使用无痕 / 隐私模式。</p><div class="bar"><button class="btn" id="ia_c">复制链接</button><button class="ghost" id="ia_k">我已知晓，继续试用</button></div></div>';document.body.appendChild(o);
+o.querySelector('#ia_k').onclick=()=>o.remove();
+o.querySelector('#ia_c').onclick=async()=>{const i=o.querySelector('#ia_u');try{await navigator.clipboard.writeText(i.value);alert('已复制，请粘贴到 Safari 或 Chrome 的地址栏打开')}catch(e){i.select();alert('请长按上面的链接，选择「拷贝」')}}}
+async function saveFile(name,blob){const dl=typeof claude!=='undefined'?await claude.use('downloads'):null;if(dl){await dl.save({filename:name,data:blob});return}const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click()}
+function csvDialog(p){const o=document.createElement('div');o.className='ov';const t=csvText(p);o.innerHTML='<div class="mod"><h2>导出 CSV</h2><p class="sub">可以下载成文件，也可以复制下面的内容。</p><p class="warn">注意：CSV 只含时间线文字和指标数值，不含档案基本信息、医嘱、模板和图片，不是完整备份。完整备份请用「数据备份」。</p><textarea readonly>'+esc(t)+'</textarea><div class="bar"><button class="ghost" id="cv_x">关闭</button><button class="btn" id="cv_d">下载 CSV 文件</button></div></div>';document.body.appendChild(o);
+o.querySelector('#cv_x').onclick=()=>o.remove();o.querySelector('#cv_d').onclick=async()=>{try{await saveFile('就医伴侣_'+String(p.member).replace(/[\\/:*?"<>|]/g,'')+'_'+today().replaceAll('-','')+'.csv',new Blob(['\ufeff'+t],{type:'text/csv;charset=utf-8'}))}catch(e){alert('下载失败，请改用复制内容')}}}
+function tplPick(p){const L=p.tpls||[];if(!A.unlocked)return'<button class="ghost lockb" data-act="price">🔒 使用自定义病历模板 · 永久版</button>';
+return L.length?`<label>病历模板</label><select id="ts"><option value="">不使用模板</option>${L.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('')}</select><div id="tf"></div>`:''}
+function tplMgr(p){if(!A.unlocked)return'';const L=p.tpls||[];
+return `<details class="card"><summary><b>自定义病历模板</b></summary>${L.map(t=>`<div class="item row2"><span><b>${esc(t.name)}</b><br><small>${t.fields.map(esc).join('、')}</small></span><button class="ghost del" data-act="tpldel" data-id="${t.id}">删除</button></div>`).join('')}<label>模板名称</label><input id="tn" placeholder="如 复查记录、化疗周期记录"><label>字段（每行一个）</label><textarea id="tfs" placeholder="如：&#10;体重(kg)&#10;不适症状&#10;下次复查日期"></textarea><div class="bar"><button class="btn" data-act="tplnew">保存模板</button></div></details>`}
+function tlView(p){const all=(p.tl||[]).slice().sort((x,y)=>y.date.localeCompare(x.date)||y.id.localeCompare(x.id)),q=(S.q||'').trim().toLowerCase(),a=all.filter(r=>(!S.kf||r.kind===S.kf)&&(!q||[r.text,r.hosp,r.kind,r.tpl,r.date,...(r.fields||[]).map(x=>x.n+x.v)].join(' ').toLowerCase().includes(q)));
+return ordView(p)+`<div class="card hd"><h2>添加一条记录</h2><label>记录类型</label><select id="tk">${KINDS.map(k=>`<option>${k}</option>`).join('')}</select><label>日期</label><input id="td" type="date" value="${today()}"><label>医院 / 科室</label><input id="th" value="${esc(p.data.hosp||'')}">${tplPick(p)}<label>内容摘要</label><textarea id="tt" placeholder="如 主诉、检查结果、药名剂量、反应表现"></textarea><label>图片（化验单、CT/MRI、基因报告）</label><input id="tlf" type="file" accept="image/*" multiple><div class="bar"><span class="saved" id="tfn"></span><button class="btn" data-act="tlsave">保存到时间线</button></div></div><div class="row"><button class="ghost" data-act="csv">导出 CSV</button><button class="ghost" data-act="pdf">导出 PDF</button></div>${tplMgr(p)}<h2 style="margin-top:14px">病程时间线</h2>${tlFilter(p,all.length)}`+(a.length?a.map(r=>recCard(r,p)).join(''):`<div class="card empty"><p class="sub">${all.length?'没有符合条件的记录，请换个关键词或类型。':'点击上方添加第一条记录，开始追踪病程 ↑'}</p></div>`)}
+const pt=s=>{s=String(s||'');const m=s.match(/\d+(\.\d+)?/g);if(!m)return['',''];const a=m.map(Number);if(a.length>=2)return[Math.min(a[0],a[1]),Math.max(a[0],a[1])];return/[<≤]/.test(s)?['',a[0]]:/[>≥]/.test(s)?[a[0],'']:['','']};
+function syncT(p){if(!p.mx||(p.disease!=='hyper'&&p.disease!=='diabetes'))return;const pr=presets(p);p.mx.forEach(m=>{if(m.my)return;const q=pr.find(x=>x.id===m.id);if(!q)return;m.lo=q.lo;m.hi=q.hi;m.src=(q.lo!==''||q.hi!=='')?'t':''})}
+function presets(p){const d=p.data,n=(v,x)=>d[v]!==undefined&&d[v]!==''&&!isNaN(+d[v])?+d[v]:x;
+const M=(name,unit,lo,hi)=>({id:'m'+name.replace(/[^\w\u4e00-\u9fa5-]/g,''),name,unit,lo,hi,pts:[]});
+if(p.disease==='tumor')return[M('CEA','ng/mL','',5),M('AFP','ng/mL','',7),M('CA199','U/mL','',37),M('CA125','U/mL','',35),M('CA153','U/mL','',25)];
+if(p.disease==='breast')return[M('CA153','U/mL','',25),M('CEA','ng/mL','',5),M('CA125','U/mL','',35)];
+const Z=a=>a.map(x=>M(x[0],x[1],'',''));
+if(p.disease==='lymphoma')return Z([['LDH','U/L'],['β2微球蛋白','mg/L'],['血红蛋白','g/L']]);
+if(p.disease==='myeloma')return Z([['M蛋白','g/L'],['血红蛋白','g/L'],['血肌酐','μmol/L'],['血钙','mmol/L'],['β2微球蛋白','mg/L']]);
+if(p.disease==='leukemia')return Z([['白细胞','×10⁹/L'],['血红蛋白','g/L'],['血小板','×10⁹/L']]);
+if(p.disease==='auto')return Z([['血沉 ESR','mm/h'],['C反应蛋白 CRP','mg/L'],['补体 C3','g/L'],['补体 C4','g/L'],['24h尿蛋白','g']]);
+if(p.disease==='ckd')return Z([['血肌酐','μmol/L'],['eGFR','mL/min/1.73m²'],['尿蛋白定量','g/24h'],['血钾','mmol/L'],['血红蛋白','g/L']]);
+if(p.disease==='colorectal')return[M('CEA','ng/mL','',5),M('CA199','U/mL','',37)];if(p.disease==='lung')return[M('CEA','ng/mL','',5),M('CYFRA21-1','ng/mL','',3.3),M('NSE','ng/mL','',16.3)];if(p.disease==='hyper')return[M('收缩压','mmHg','',n('sbp','')),M('舒张压','mmHg','',n('dbp','')),M('心率','次/分','','')];
+if(p.disease==='diabetes'){const a=pt(d.fbg),b=pt(d.pbg);return[M('空腹血糖','mmol/L',a[0],a[1]),M('餐后2h血糖','mmol/L',b[0],b[1]),M('HbA1c','%','','')]}
+return[]}
+const inR=(m,v)=>(!m.my&&m.src!=='t')||!((m.lo!==''&&v<+m.lo)||(m.hi!==''&&v>+m.hi));
+const hasL=x=>!!x&&x.rl!==undefined&&x.rh!==undefined&&(x.rl!==''||x.rh!=='');
+const inRP=(m,x)=>hasL(x)?!((x.rl!==''&&x.v<+x.rl)||(x.rh!==''&&x.v>+x.rh)):inR(m,x.v);
+const SRC={lab:'化验单参考范围',doc:'医生给的目标',me:'你自己设定的范围'};
+function chart(m,pts){if(!pts.length)return'<div class="sub">该时间段暂无数据</div>';
+const W=320,H=150,P=24,vs=pts.map(x=>x.v);if(m.lo!=='')vs.push(+m.lo);if(m.hi!=='')vs.push(+m.hi);
+let a=Math.min(...vs),b=Math.max(...vs);if(a===b){a-=1;b+=1}const pd=(b-a)*.15;a-=pd;b+=pd;
+const t=pts.map(x=>new Date(x.date).getTime()),t0=Math.min(...t),t1=Math.max(...t);
+const X=i=>t0===t1?W/2:P+(t[i]-t0)/(t1-t0)*(W-2*P),Y=v=>H-P-(v-a)/(b-a)*(H-2*P);
+const ln=v=>`<line x1="${P}" x2="${W-P/2}" y1="${Y(v)}" y2="${Y(v)}" stroke="#6b7f8a" stroke-dasharray="4 3" opacity=".6"/><text x="${W-P/2}" y="${Y(v)-3}" font-size="10" text-anchor="end" fill="currentColor">${v}</text>`;
+return `<svg viewBox="0 0 ${W} ${H}" class="ch" role="img" aria-label="${esc(m.name)}趋势图"><polyline fill="none" stroke="var(--c)" stroke-width="2" points="${pts.map((x,i)=>X(i)+','+Y(x.v)).join(' ')}"/>${m.hi!==''?ln(+m.hi):''}${m.lo!==''?ln(+m.lo):''}${pts.map((x,i)=>`<circle cx="${X(i)}" cy="${Y(x.v)}" r="5" fill="${inRP(m,x)?'var(--c)':'#dc2626'}"/>`).join('')}<text x="${P}" y="${H-6}" font-size="10" fill="currentColor">${pts[0].date.slice(5)}</text><text x="${W-P/2}" y="${H-6}" font-size="10" text-anchor="end" fill="currentColor">${pts[pts.length-1].date.slice(5)}</text></svg>`}
+function mCard(m){const days=S.range==='week'?7:S.range==='month'?30:1e5,lim=Date.now()-days*864e5;
+const all=m.pts.slice().sort((a,b)=>a.date.localeCompare(b.date)),pts=all.filter(x=>new Date(x.date).getTime()>=lim),last=all[all.length-1];
+return `<div class="card"><div class="tlh"><h2 style="margin:0">${esc(m.name)}</h2>${last?`<span class="val ${inRP(m,last)?'':'bad'}">${last.v} <small>${esc(m.unit)}</small></span>`:''}</div><div class="sub">${m.lo===''&&m.hi===''?'未设置范围，不会标红。可在下方填写医生给你的目标':(m.my?(SRC[m.rsrc||'me']||SRC.me):m.src==='t'?'来自档案里的目标':'通用参考值（因人而异，不是你的诊断或医生定的目标）')+' '+(m.lo!==''?m.lo:'—')+' ~ '+(m.hi!==''?m.hi:'—')+(m.my||m.src==='t'?'，超出标红':'，仅作对照，不会标红。想要标红提示，请在下方填你自己的范围，或在每次录入时填化验单上的范围')}</div>${m.pts.length?chart(m,pts):'<div class="sub">录入第一个数值，开启趋势追踪 ↓</div>'}${all.some(hasL)?'<div class="sub">图上红点按每次记录自己的化验单参考范围判断；虚线是上面设置的统一范围，两者可能不同。'+(new Set(all.filter(hasL).map(x=>x.rl+'~'+x.rh)).size>1?'<b>各次化验单的参考范围并不一致</b>（每次的范围见下方记录列表）。':'')+'</div>':''}<div class="row"><input id="d_${m.id}" type="date" value="${today()}" aria-label="日期"><input id="v_${m.id}" type="number" step="any" inputmode="decimal" placeholder="数值" aria-label="数值"></div><input id="n_${m.id}" placeholder="备注（可不填，如 早晨、餐后）" aria-label="备注" style="margin-top:8px"><details><summary>化验单上的参考范围、检测机构（可选）</summary><p class="sub">照化验单抄。填了参考范围，这一次是否标红就按化验单的范围判断。</p><div class="row"><input id="rl_${m.id}" type="number" step="any" inputmode="decimal" placeholder="化验单下限" aria-label="化验单参考下限"><input id="rh_${m.id}" type="number" step="any" inputmode="decimal" placeholder="化验单上限" aria-label="化验单参考上限"></div><input id="og_${m.id}" placeholder="检测机构（可不填）" aria-label="检测机构" style="margin-top:8px"></details><div class="bar"><button class="btn" data-act="mxadd" data-id="${m.id}">添加数值</button></div><details ${S.mxe&&S.mxe.startsWith(m.id+'|')?'open':''}><summary>修改范围 / 查看记录</summary><div class="row"><input id="lo_${m.id}" type="number" step="any" placeholder="下限" value="${m.lo}" aria-label="下限"><input id="hi_${m.id}" type="number" step="any" placeholder="上限" value="${m.hi}" aria-label="上限"></div><label>这个范围是谁给的</label><select id="rs_${m.id}">${Object.keys(SRC).map(k=>`<option value="${k}" ${(m.rsrc||'me')===k?'selected':''}>${SRC[k]}</option>`).join('')}</select><div class="bar"><button class="ghost" data-act="mxrange" data-id="${m.id}">保存范围</button></div>${all.slice().reverse().map(x=>`${ptRow(m,x)}`).join('')}<div class="bar"><button class="ghost del" data-act="mxrm" data-id="${m.id}">删除该指标</button></div></details></div>`}
+function mxView(p){if(!p.mx){p.mx=presets(p);save()}syncT(p);
+let h=`<div class="seg">${[['week','周'],['month','月'],['all','全病程']].map(r=>`<button class="chip" aria-pressed="${S.range===r[0]}" data-act="range" data-r="${r[0]}">${r[1]}</button>`).join('')}</div>`+'<p class="sub">范围线只是提示：超出或在范围内，都不代表病情好坏，请以医生的判断为准。</p>'+p.mx.map(mCard).join('');
+if(p.disease==='hyper'){const ms=(p.tl||[]).filter(r=>r.kind==='用药').sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
+h+=`<div class="card"><h2>服药记录</h2><label>药名和剂量</label><input id="med" placeholder="如 氨氯地平 5mg"><div class="bar"><button class="btn" data-act="med">记录已服药</button></div>${ms.map(r=>`<div class="sub">${r.date} · ${esc(r.text)}</div>`).join('')}</div>`}
+const kid=p.disease==='rare'&&p.age==='child';
+return h+`<div class="card"><h2>${p.disease==='rare'?'添加检验项目 / 评估得分':'添加自定义指标'}</h2>${p.disease==='rare'&&!p.mx.length?'<p class="sub">罕见病指标因人而异，请按化验单或评估报告自行添加。</p>':''}<label>名称</label><input id="nn" placeholder="${kid?'如 粗大运动得分、语言评估得分':'如 肌酸激酶'}"><label>单位</label><input id="nu" placeholder="如 U/L、分"><div class="row"><div><label>下限</label><input id="nl" type="number" step="any" inputmode="decimal"></div><div><label>上限</label><input id="nh" type="number" step="any" inputmode="decimal"></div></div><div class="bar"><button class="btn" data-act="mxnew">添加指标</button></div></div>`}
+function extra(act,b,p){const g=id=>document.getElementById(id),f=s=>{s=s.trim();return s===''||isNaN(+s)?'':+s};
+if(act==='priv'){privacy();return 2}
+if(act==='price'){if(TRIAL)return 2;S.view='price';scrollTo(0,0);return 1}
+if(act==='back'){S.view='list';return 1}
+if(act==='home'){S.view='home';S.q='';S.kf='';S.edit=null;S.mxe=null;scrollTo(0,0);return 1}
+if(act==='demo'){const d=mkDemo();S.profiles.push(d);S.cur=d.id;S.tab='tl';S.view='list';save();scrollTo(0,0);return 1}
+if(act==='bk'){S.view='bk';scrollTo(0,0);return 1}
+if(act==='unlock'){if(!confirm('放弃读取失败的本机数据并重新开始？'+(BADOK?'原始数据副本会保留。':'注意：原始数据没有成功另存，放弃后可能无法找回！')))return 2;try{localStorage.removeItem('companion.v1')}catch(e){alert('无法清除异常数据，请先释放浏览器空间后重试。');return 2}S.profiles=[];mem=[];S.cur=null;LOCK=0;DIRTY=0;S.view='list';return 1}
+if(act==='wipe'){if(!confirm('将删除本机全部档案、记录、指标和图片，且无法恢复。确定继续？'))return 2;if(prompt('请输入「清除」两个字确认')!=='清除')return 2;(async()=>{let ok=true;try{const d=await idb();await new Promise((s,j)=>{const t=d.transaction('i','readwrite');t.objectStore('i').clear();t.oncomplete=s;t.onerror=()=>j(t.error);t.onabort=()=>j(t.error)});const n=await new Promise((s,j)=>{const q=d.transaction('i').objectStore('i').count();q.onsuccess=()=>s(q.result);q.onerror=()=>j(q.error)});if(n!==0)ok=false}catch(e){ok=false}
+try{localStorage.removeItem('companion.v1');localStorage.removeItem('companion.v1.bad');if(localStorage.getItem('companion.v1'))ok=false}catch(e){ok=false}
+if(ok){S.profiles=[];mem=[];S.cur=null;LOCK=0;DIRTY=0;S.view='list';view();alert('已清除本机全部数据。')}else{view();alert('清除没有完全成功，部分资料可能还在。请关闭页面后重试，或在浏览器设置里清除本站数据。')}})();return 2}
+if(act==='bkexp'){exportBackup();return 2}
+if(act==='bkimp'){importBackup(g('bkf').files[0]);return 2}
+if(act==='copy'){const i=g('rl');i.select();try{navigator.clipboard.writeText(i.value)}catch(e){}return 2}
+if(act==='buy'){if(BUY_URL)window.open(BUY_URL,'_blank');else alert('购买渠道尚未开通。付款后会收到兑换码，在下方输入即可解锁。');return 2}
+if(act==='redeem'){const c=g('rc').value.trim().toUpperCase();(async()=>{try{if(HASHES.includes(await sha(c))){A.unlocked=true;A._real=true;A.code=c;saveA();S.view='list';alert('已解锁永久版')}else alert('兑换码无效，请检查后重试')}catch(e){alert('当前浏览器无法校验兑换码')}view()})();return 2}
+if(!p)return 0;
+if(act==='csv'||act==='pdf'){if(!A.unlocked){S.view='price';scrollTo(0,0);return 1}
+if(act==='pdf'){openPdf(p,'all');return 2}
+csvDialog(p);return 2}
+if(act==='tplnew'){const n=g('tn').value.trim(),fl=g('tfs').value.split('\n').map(s=>s.trim()).filter(Boolean).slice(0,30);if(!n||!fl.length){alert('请填写模板名称和至少一个字段');return 2}(p.tpls=p.tpls||[]).push({id:'t'+Date.now(),name:n,fields:fl});save();return 1}
+if(act==='tpldel'){if(!confirm('删除这个模板？已保存的记录不受影响。'))return 2;p.tpls=p.tpls.filter(x=>x.id!==b.dataset.id);save();return 1}
+if(act==='oradd'){const t=g('ot').value.trim();if(!t){alert('请填写医生说的内容');return 2}(p.orders=p.orders||[]).push({id:'o'+Date.now(),date:today(),cat:g('oc').value,text:t,due:g('od').value||'',done:false});save();return 1}
+if(act==='ordone'||act==='orundo'){const o=(p.orders||[]).find(x=>x.id===b.dataset.id);if(o){o.done=act==='ordone';o.doneAt=o.done?today():''}save();return 1}
+if(act==='ordel'){if(!confirm('删除这条医嘱？'))return 2;p.orders=(p.orders||[]).filter(x=>x.id!==b.dataset.id);save();return 1}
+if(act==='tlstar'){const r=(p.tl||[]).find(x=>x.id===b.dataset.id);if(r){r.star=r.star?0:1;save()}return 1}
+if(act==='tledit'){S.edit=b.dataset.id;return 1}
+if(act==='tlcancel'){S.edit=null;return 1}
+if(act==='tlupd'){const r=(p.tl||[]).find(x=>x.id===b.dataset.id);if(!r)return 1;const d=g('ed').value;if(!d){alert('请选择日期');return 2}r.kind=g('ek').value;r.date=d;r.hosp=g('eh').value.trim();r.text=g('et').value.trim();document.querySelectorAll('[data-ef]').forEach(e=>{const x=(r.fields||[])[+e.dataset.ef];if(x)x.v=e.value.trim()});r.fields=(r.fields||[]).filter(x=>x.v);S.edit=null;save();return 1}
+if(act==='sr'){S.sr=b.dataset.r;return 1}
+if(act==='smpdf'){if(!A.unlocked){S.view='price';return 1}openPdf(p);return 2}
+if(act==='smcopy'){if(!A.unlocked){S.view='price';return 1}const s=smData(p);(async()=>{try{await navigator.clipboard.writeText(s.md);alert('已复制，可以粘贴到微信或备忘录。若要粘贴到第三方 AI 应用，请先去掉姓名、身份证号等个人信息。')}catch(e){modal('<h2>文字摘要</h2><textarea readonly>'+esc(s.md)+'</textarea><div class="bar"><button class="ghost" data-go="x">关闭</button></div>')}})();return 2}
+if(act==='tab'){S.tab=b.dataset.t;S.edit=null;S.mxe=null;return 1}
+if(act==='range'){S.range=b.dataset.r;return 1}
+if(act==='zoom'){const o=document.createElement('div');o.style.cssText='position:fixed;inset:0;background:#000d;display:flex;align-items:center;justify-content:center;z-index:9;padding:12px';o.innerHTML='<img src="'+b.src+'" style="max-width:100%;max-height:100%">';o.onclick=()=>o.remove();document.body.appendChild(o);return 2}
+if(act==='tlsave'){const tx=g('tt').value.trim(),fs=[...g('tlf').files],tp=(p.tpls||[]).find(x=>x.id===(g('ts')||{}).value),fv=tp?[...document.querySelectorAll('[data-tf]')].map((e,i)=>({n:tp.fields[i],v:e.value.trim()})).filter(x=>x.v):[];if(!tx&&!fs.length&&!fv.length){alert('请填写内容、选择图片或填写模板字段');return 2}if(!A.unlocked&&A.pts<1){upgrade();return 2}
+const r={id:'r'+Date.now(),kind:g('tk').value,date:g('td').value||today(),hosp:g('th').value.trim(),text:tx,imgs:[],tpl:tp?tp.name:'',fields:fv};
+(async()=>{let fail=0;for(const x of fs){try{const k='i'+Date.now()+Math.random().toString(36).slice(2,7);await iput(k,await shrink(x));r.imgs.push(k)}catch(e){fail++}}if(fail)alert('共选了 '+fs.length+' 张图片，其中 '+fail+' 张保存失败（可能是本机存储空间不足）。已保存文字记录和 '+r.imgs.length+' 张图片。请先导出备份，清理空间后重新添加失败的图片。');
+(p.tl=p.tl||[]).push(r);const ok=save();if(ok)spend();view();if(ok)bkToast()})();return 2}
+if(act==='tldel'){if(!confirm('删除这条记录？图片也会一并删除。'))return 2;const r=p.tl.find(x=>x.id===b.dataset.id);if(!r)return 1;(r.imgs||[]).forEach(idel);p.tl=p.tl.filter(x=>x!==r);save();return 1}
+if(act==='med'){const v=g('med').value.trim();if(!v){alert('请填写药名和剂量');return 2}if(!A.unlocked&&A.pts<1){upgrade();return 2}(p.tl=p.tl||[]).push({id:'r'+Date.now(),kind:'用药',date:today(),hosp:'',text:'已服药：'+v,imgs:[]});if(save())spend();return 1}
+if(act==='mxnew'){const n=g('nn').value.trim();if(!n){alert('请填写指标名称');return 2}{const a=f(g('nl').value),c=f(g('nh').value);if(a!==''&&c!==''&&a>c){alert('下限不能大于上限，请检查');return 2}}p.mx.push({id:'m'+Date.now(),name:n,unit:g('nu').value.trim(),lo:f(g('nl').value),hi:f(g('nh').value),my:1,pts:[]});save();return 1}
+const m=p.mx&&p.mx.find(x=>x.id===b.dataset.id);if(!m)return 0;
+if(act==='mxedit'){S.mxe=m.id+'|'+b.dataset.pd;return 1}
+if(act==='mxecancel'){S.mxe=null;return 1}
+if(act==='mxesave'){const x=m.pts.find(y=>y.id===b.dataset.pd),v=parseFloat(g('pe_v').value),d=g('pe_d').value;if(!x||isNaN(v)||!d){alert('请填写日期和数值');return 2}{const a_=f(g('pe_rl').value),b_=f(g('pe_rh').value);if(a_!==''&&b_!==''&&a_>b_){alert('化验单参考范围的下限不能大于上限');return 2}}x.v=v;x.date=d;x.note=(g('pe_n')||{value:''}).value.trim();{const rl=f(g('pe_rl').value),rh=f(g('pe_rh').value),og=g('pe_o').value.trim();if(rl!==''||rh!==''){x.rl=rl;x.rh=rh}else{delete x.rl;delete x.rh}if(og)x.org=og;else delete x.org}S.mxe=null;save();return 1}
+if(act==='mxadd'){const v=parseFloat(g('v_'+m.id).value);if(isNaN(v)){alert('请填写数值');return 2}const pn={id:'x'+Date.now(),date:g('d_'+m.id).value||today(),v,note:g('n_'+m.id).value.trim()},rl=f(g('rl_'+m.id).value),rh=f(g('rh_'+m.id).value),og=g('og_'+m.id).value.trim();if(rl!==''&&rh!==''&&rl>rh){alert('化验单参考范围的下限不能大于上限');return 2}if(rl!==''||rh!==''){pn.rl=rl;pn.rh=rh}if(og)pn.org=og;m.pts.push(pn);save();return 1}
+if(act==='mxrange'){const lo=f(g('lo_'+m.id).value),hi=f(g('hi_'+m.id).value);if(lo!==''&&hi!==''&&lo>hi){alert('下限不能大于上限，请检查');return 2}m.lo=lo;m.hi=hi;m.my=1;m.rsrc=g('rs_'+m.id).value;save();return 1}
+if(act==='mxdel'){m.pts=m.pts.filter(x=>x.id!==b.dataset.pd);save();return 1}
+if(act==='mxrm'){if(!confirm('删除指标「'+m.name+'」及其全部记录？'))return 2;p.mx=p.mx.filter(x=>x!==m);save();return 1}
+return 0}
+let STO=true,IDBOK=true;const INAPP=typeof navigator!=='undefined'&&/MicroMessenger|\sQQ\//i.test(navigator.userAgent||'');
+const needBk=()=>{let n=0;S.profiles.filter(p=>!p.demo).forEach(p=>{n+=(p.tl||[]).length;(p.mx||[]).forEach(m=>n+=m.pts.length)});if(n<3)return false;return !A.bk||Date.now()-new Date(A.bk).getTime()>30*864e5};
+const lockBanner=()=>(LOCK?`<div class="card" style="border-color:#dc2626"><b>⚠️ 数据异常保护中</b><br>本机档案读取失败，现在的新增和修改都不会保存，以免覆盖原数据。${BADOK?'原始数据已另存一份。':'<b>原始数据另存失败，请不要清理浏览器数据。</b>'}<div class="bar"><button class="ghost" data-act="bk">从备份恢复</button><button class="ghost del" data-act="unlock">放弃异常数据，重新开始</button></div></div>`:'')+(DIRTY?`<div class="card" style="border-color:#dc2626"><b>⚠️ 当前修改尚未可靠保存</b><br>刷新或关闭页面可能丢失。请先导出备份，并释放浏览器空间后重试。<div class="bar"><button class="ghost" data-act="bk">去备份</button></div></div>`:'');
+const banners=()=>lockBanner()+(STO&&IDBOK?'':`<div class="card" style="border-color:#dc2626"><b>⚠️ 当前浏览器无法保存数据</b><br>可能是无痕模式或内置浏览器（如微信、QQ）。请换 Safari 或 Chrome 的正常模式打开，否则退出后记录会丢失。</div>`)+`<div class="card" style="padding:10px 14px">${TRIAL?'试用版：全部功能免费开放试用，还在完善中，欢迎用虚构资料体验。💡':'试用版：功能还在完善中，欢迎用虚构资料体验。💡'}</div>`+(S.full?`<div class="card" style="border-color:#E05252"><b>本机存储空间快满了</b><br>请先到「数据备份」导出备份，再删除不需要的图片，否则新图片可能保存失败。</div>`:'')+(INAPP?`<div class="card" style="border-color:#E05252"><b>你正在用微信 / QQ 内置浏览器</b><br>这里的数据容易被清理。请点右上角「在浏览器打开」，改用 Safari 或 Chrome。</div>`:'')+((S.view==='list'||S.view==='home')?`<div class="card" style="padding:10px 14px;border-color:#b7791f">⚠️ 数据只存在这个浏览器里（未加密，也不等于云端备份）：请勿用微信 / QQ 内置浏览器，不要用无痕模式，并定期在「数据备份」导出文件保存。建议用 Safari「添加到主屏幕」。</div>`:'')+(needBk()&&S.view!=='bk'?`<div class="card" style="border-color:#2D6B8F"><b>该备份了</b>：${A.bk?'距离上次备份已超过 30 天':'你还没有备份过'}。<div class="bar"><button class="ghost" data-act="bk">去备份</button></div></div>`:'');
+async function shrink(f){try{if(!/^image\/(jpeg|png|webp)$/.test(f.type)||f.size<300000)return f;const bm=await createImageBitmap(f),s=Math.min(1,2000/Math.max(bm.width,bm.height)),c=document.createElement('canvas');c.width=Math.round(bm.width*s);c.height=Math.round(bm.height*s);c.getContext('2d').drawImage(bm,0,0,c.width,c.height);const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.85));return b&&b.size<f.size?b:f}catch(e){return f}}
+const TRIAL=true;const BUY_URL='';
+const HASHES=["1aff58e135a168a9710a1c224fc226d11dfa10e6abd324d3f277b83b7cd4de65", "dab2337fe8807f4c12bbb41f8fdd3790991b10b59a2b060b1f26d96930fe2b6f", "80a1a7ff9b7a588b8a5873a75abeb0dc7d6bc4e45b81b0aa47824e5782a6c828", "3c7379f6c9c044a5f6833eabd48927f47c1d488506ffd90e287108c544b0ff44", "8834f3eae19707a606e9ad62c4359946b86370860445e6c2c14b8c5debe45325", "9a51163afd2712ecfd74b23dbbc493e30490c47550071ba31ee8b563816108af", "54a4df90c323f68d0538a76229b3c7ed549030529ec0ab9eadd86acaf22f47ec", "9e2a37c3c8e82f847e6cfb67b9f0d7bc7e262b6b6f25ad77b51c5f04896986e1", "4365c567ba016c2f5dfd923ea87912738bc73d92e9774a80d436b68bd49212b9", "6c928c1161940c01bc172b92aff6f90c75188c35f949164753b2fc437e2167f2"];
+let A=null;
+const saveA=()=>{try{const o={...A,unlocked:!!A._real};delete o._real;localStorage.setItem('companion.acct',JSON.stringify(o))}catch(e){storeFail()}};
+const spend=()=>{if(!A.unlocked){A.pts=Math.max(0,A.pts-1);saveA()}};
+const sha=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))].map(x=>x.toString(16).padStart(2,'0')).join('');
+const privacy=()=>modal('<h2>隐私说明</h2><p>你在这里录入的内容，只保存在这台设备的浏览器里，页面本身不会把它上传到服务器。</p><p>会保存的内容：档案信息、时间线记录、指标数值和你上传的图片。</p><p>清理浏览器数据、使用无痕模式或更换设备，都会丢失这些资料，请定期在「数据备份」里导出。</p><p><b>资料存在本机不等于已加密。</b>别人能打开你的手机或浏览器，就可能看到这些内容；备份文件默认也未加密（导出时可设密码），请勿放在公共设备或不可信的共享空间。</p><p>儿童档案请由监护人填写。</p><p class="sub">本工具仅作病程资料归档，不能替代医生面诊。</p><div class="bar"><button class="btn" data-go="x">我知道了</button></div>');
+function acctInit(){try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}try{if(navigator.storage&&navigator.storage.estimate)navigator.storage.estimate().then(e=>{S.quota=e;if(e.quota&&e.usage/e.quota>0.8){S.full=1;view()}}).catch(()=>{})}catch(e){}try{localStorage.setItem('companion.t','1');localStorage.removeItem('companion.t')}catch(e){STO=false}idb().catch(()=>{IDBOK=false;view()});let a=null;try{a=JSON.parse(localStorage.getItem('companion.acct'))}catch(e){}
+if(!a){a={pts:5,ref:'R'+Array.from(crypto.getRandomValues(new Uint8Array(6)),x=>'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[x%32]).join(''),claimed:[],unlocked:false,code:''};
+const r=new URLSearchParams(location.search).get('ref');
+if(r&&r!==a.ref&&/^R[A-Z0-9]{6}$/.test(r)&&!a.claimed.includes(r)){a.pts+=3;a.claimed.push(r)}
+A=a;saveA()}else A=a}
+function modal(h){const o=document.createElement('div');o.className='ov';o.innerHTML='<div class="mod">'+h+'</div>';o.onclick=e=>{if(e.target===o)o.remove()};o.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{o.remove();if(b.dataset.go==='price'){S.view='price';view();scrollTo(0,0)}});document.body.appendChild(o)}
+const upgrade=()=>modal('<h2>积分已用完</h2><p>没有积分，无法保存新记录。永久买断版 ¥29，一次性付费，无限记录。</p><div class="bar"><button class="ghost" data-go="x">以后再说</button><button class="btn" data-go="price">了解永久版</button></div>');
+const acctBar=()=>`<div class="acct"><span>已建档案 <b>${S.profiles.length}</b>${TRIAL?'':A.unlocked?' · 永久版':(A.pts<=1?' · 剩余积分 <b>'+A.pts+'</b>':'')}</span><span><button class="ghost" data-act="bk">数据备份</button> ${TRIAL?'':`<button class="ghost" data-act="price">${A.unlocked?'我的权益':'积分与定价'}</button>`}</span></div>`;
+function priceView(){const u=location.origin+location.pathname+'?ref='+A.ref;
+return `<div class="card"><h2>积分免费模式</h2><p>剩余积分：<b>${A.unlocked?'不限':A.pts}</b>。1积分=保存1条新的时间线记录，积分用完后无法新增记录。</p><label>我的推荐码：${A.ref}</label><input id="rl" readonly value="${esc(u)}" aria-label="推荐链接"><div class="bar"><button class="ghost" data-act="copy">复制推荐链接</button></div><p class="sub">积分仅为本网页内虚拟权益，不可兑换现金、不可提现、不能转让。新用户默认赠送5积分；通过他人推荐链接进入，额外获得3积分。</p><p class="warn">⚠️重要提醒：所有记录、积分、兑换码保存在浏览器本地缓存。清理浏览器缓存/无痕模式/换设备会丢失全部数据，请自行做好记录备份。</p></div><div class="card hd"><h2>永久买断版 ¥29</h2><p>一次性付费，永久解锁：</p><ul><li>无限记录，不再消耗积分</li><li>PDF导出</li><li>CSV批量导出</li><li>自定义病历模板</li></ul>${A.unlocked?'<p><b>你已解锁永久版。</b></p>':'<p class="sub">试用期间暂未开放购买，敬请期待。</p>'}</div>${A.unlocked?'':'<div class="card"><h2>输入兑换码解锁永久版</h2><input id="rc" placeholder="如 JW-XXXX-XXXX" autocapitalize="characters"><div class="bar"><button class="btn" data-act="redeem">解锁</button></div></div>'}<div class="bar"><button class="ghost" data-act="back">返回档案</button></div>`}
+function csvText(p){const q=s=>{let t=String(s??'');if(typeof s==='string'&&/^[=+\-@\t\r]/.test(t))t="'"+t;return '"'+t.replace(/"/g,'""')+'"'};let r=['日期,类型,医院科室,内容'];(p.tl||[]).slice().sort((a,b)=>b.date.localeCompare(a.date)).forEach(x=>r.push([x.date,x.kind+(x.tpl?'·'+x.tpl:''),x.hosp,[x.text,...(x.fields||[]).map(f=>f.n+'：'+f.v)].filter(Boolean).join('；')].map(q).join(',')));r.push('','指标,单位,日期,数值,化验单参考下限,化验单参考上限,检测机构');(p.mx||[]).forEach(m=>m.pts.forEach(x=>r.push([m.name,m.unit,x.date,x.v,hasL(x)?x.rl:'',hasL(x)?x.rh:'',x.org||''].map(q).join(','))));return r.join('\n')}
+const app=document.getElementById('app');
+app.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;const act=b.dataset.act,p=cur();
+if(LOCK&&['new','create','demo','addrow','rm','tlsave','med','oradd','ordone','orundo','ordel','tldel','mxnew','mxadd','mxesave','mxrange','mxdel','mxrm','tplnew','tpldel','tlupd','tlstar','del'].includes(act)){alert('数据异常保护中：请先从备份恢复，或在页面顶部选择放弃异常数据后重新开始。');return}
+const x=extra(act,b,p);if(x){if(x===1)view();return}
+if(act==='pick'){S.cur=b.dataset.id;S.view='list';S.q='';S.kf='';S.edit=null}
+else if(act==='new'){S.view='new';S.draft={}}
+else if(act==='cancel')S.view='list';
+else if(act==='sub'){S.draft.member=document.getElementById('mn').value;S.draft.sub=b.dataset.s}
+else if(act==='dis'){S.draft.member=document.getElementById('mn').value;S.draft.disease=b.dataset.d;if(S.draft.disease!=='rare')delete S.draft.age;if(S.draft.disease!=='tumor')delete S.draft.sub}
+else if(act==='create'){const d=S.draft;d.member=document.getElementById('mn').value.trim();
+const r=document.querySelector('input[name=ag]:checked');if(r)d.age=r.value;
+if(!d.member){alert('请填写成员称呼');return}if(!d.disease){alert('请选择病种');return}if(d.disease==='rare'&&!d.age){alert('请选择儿童或成人');return}if(d.disease==='tumor'&&!d.sub){alert('请选择肿瘤类型');return}
+const n={id:'p'+Date.now(),member:d.member,disease:d.disease==='tumor'&&SUBD[d.sub]?SUBD[d.sub]:d.disease,sub:d.disease==='tumor'&&!SUBD[d.sub]?d.sub:undefined,age:d.age,data:{}};S.profiles.push(n);S.cur=n.id;S.view='list';save()}
+else if(act==='addrow'){(p.data[b.dataset.f]=p.data[b.dataset.f]||[]).push({});save()}
+else if(act==='rm'){p.data[b.dataset.f].splice(+b.dataset.i,1);save()}
+else if(act==='del'){askDelete(p);return}
+view()});
+const onField=e=>{const t=e.target,p=cur();if(!p||S.view==='new')return;
+if(t.dataset.mem)p.member=t.value;
+else if(t.dataset.k)p.data[t.dataset.k]=t.value;
+else if(t.dataset.m){const a=new Set(p.data[t.dataset.m]||[]);t.checked?a.add(t.value):a.delete(t.value);p.data[t.dataset.m]=[...a]}
+else if(t.dataset.l){const l=p.data[t.dataset.l];l[+t.dataset.i][t.dataset.c]=t.value}
+else return;save();if(t.dataset.mem){const c=document.querySelector('.chip[aria-pressed=true]');if(c)c.textContent=label(p);const h=document.querySelector('.card.hd h2');if(h)h.textContent=label(p)}};
+app.addEventListener('input',onField);
+app.addEventListener('change',e=>{if(e.target.tagName==='SELECT'&&(e.target.dataset.k||e.target.dataset.l))onField(e);if(e.target.dataset.k==='ask'){view();return}if(e.target.id==='tq'||e.target.id==='tkf'){if(e.target.id==='tq')S.q=e.target.value;else S.kf=e.target.value;view();return}if(e.target.id==='ts'){const t=(cur().tpls||[]).find(x=>x.id===e.target.value);document.getElementById('tf').innerHTML=t?t.fields.map((f,i)=>'<label>'+esc(f)+'</label><input data-tf="'+i+'">').join(''):''}if(e.target.id==='tlf')document.getElementById('tfn').textContent='已选 '+e.target.files.length+' 张图片';if(e.target.name==='ag'){S.draft.age=e.target.value}});
+acctInit();A._real=!!A.unlocked;if(TRIAL)A.unlocked=true;load();view();if(!A.priv){A.priv=1;saveA();privacy()}if(INAPP)inAppModal();
+</script></body></html>
